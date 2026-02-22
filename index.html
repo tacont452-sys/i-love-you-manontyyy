@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى أغلى الناس</title>
+    <style>
+        body { background-color: #ffeef2; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; font-family: 'Arial', sans-serif; cursor: pointer; }
+        .envelope-wrapper { position: relative; transition: 0.5s; }
+        .envelope { width: 300px; height: 200px; background: #f08080; position: relative; border-radius: 0 0 10px 10px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); z-index: 1; }
+        .envelope::before { content: ""; position: absolute; top: 0; z-index: 4; border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 100px solid #f08080; transform-origin: top; transition: 0.5s; }
+        .letter { position: absolute; bottom: 0; left: 10%; width: 80%; height: 80%; background: white; border-radius: 5px; padding: 20px; transition: 0.5s; z-index: 2; text-align: center; box-sizing: border-box; }
+        .letter h2 { color: #d63384; font-size: 20px; margin-bottom: 10px; }
+        .letter p { color: #555; font-size: 14px; line-height: 1.6; }
+        .envelope-wrapper.open .envelope::before { transform: rotateX(180deg); z-index: 0; }
+        .envelope-wrapper.open .letter { bottom: 120px; height: 220px; z-index: 3; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .heart-btn { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 50px; z-index: 5; transition: 0.3s; }
+        .envelope-wrapper.open .heart-btn { opacity: 0; visibility: hidden; }
+        /* قلوب متساقطة */
+        .falling-heart { position: fixed; top: -20px; font-size: 20px; color: #ff4b2b; z-index: -1; animation: fall 4s linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh); opacity: 0; } }
+    </style>
+</head>
+<body onclick="openLetter()">
+    <div class="envelope-wrapper">
+        <div class="envelope">
+            <div class="heart-btn">❤️</div>
+            <div class="letter">
+                <h2>إلى منونتي..</h2>
+                <p>كتبتلك الرسالة دي عشان أقولك إنك أجمل حاجة حصلتلي.. اسمعي الأغنية دي.</p>
+            </div>
+        </div>
+    </div>
+    <audio id="loveSong" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <script>
+        function openLetter() {
+            document.querySelector('.envelope-wrapper').classList.add('open');
+            var audio = document.getElementById("loveSong");
+            if (audio.paused) { audio.play(); }
+            setInterval(createHeart, 300);
+        }
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
